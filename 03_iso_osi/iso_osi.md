@@ -74,6 +74,25 @@ Il modello ISO/OSI è composto da 7 livelli:
 
 ---
 
+## TCP/IP
+
+Il modello TCP/IP (Transimit Control Protocol/Internet Protocol) è il modello di riferimento per la progettazione dei protocolli di rete. Il modello è stato sviluppato dal DARPA (Defense Advanced Research Projects Agency) nel 1970 e si basa su un'architettura a livelli.
+Come visto prima, i livelli ISO/OSI applicazione, presentazione e sessione sono condensati in un unico livello nel modello TCP/IP, chiamato livello applicazione, mentre i livelli collegamento e fisico sono condensati in un unico livello, chiamato livello accesso alla rete.
+
+---
+
+## Incapsulamento e decapsulamento
+
+Ogni livello del modello ISO/OSI o del protocollo TCP/IP aggiunge un'intestazione ai dati ricevuti dal livello superiore. Questo processo è chiamato **incapsulamento**. Quando i dati vengono ricevuti, le intestazioni vengono rimosse, questo processo è chiamato **decapsulamento**.
+L'header di ogni livello prende il nome di PDU (Protocol Data Unit), e ogni livello ha un nome diverso per la PDU:
+
+- **Livello applicazione**: Messaggio
+- **Livello trasporto**: Segmento
+- **Livello rete**: Pacchetto
+- **Livello collegamento**: Frame
+
+---
+
 ## Applicazioni di rete
 
 Un'applicazione di rete è costituita da due o più processi che comunicano tra loro attraverso la rete. Questi processi operano interagendo tra loro utilizzando delle risorse comuni, come ad esempio un database. 
