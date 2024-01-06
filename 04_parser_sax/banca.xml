@@ -1,0 +1,44 @@
+<banca>
+    <nomeBanca>Banca Midlanum</nomeBanca>
+    <direttore>
+        <nome>Antonio</nome>
+        <cognome>Fendi</cognome>
+        <mail>antoniofendi@gmail.com</mail>
+    </direttore>
+    <tipoBanca>digitale</tipoBanca>
+
+    <conti>
+        <contoCorrente>
+            <iban>IT01222233334444</iban>
+            <proprietario>
+                <nome>Dante</nome>
+                <cognome>Dua</cognome>
+                <numero>241041118</numero>
+            </proprietario>
+            <saldo>25000</saldo>
+            <tipoConto>primario</tipoConto>
+        </contoCorrente>
+
+        <contoCorrente>
+            <iban>IT01222233335555</iban>
+            <proprietario>
+                <nome>Luca</nome>
+                <cognome>Malato</cognome>
+                <numero>2410121117</numero>
+            </proprietario>
+            <saldo>500000</saldo>
+            <tipoConto>risparmio</tipoConto>
+        </contoCorrente>
+
+        <contoCorrente>
+            <iban>IT01222233336666</iban>
+            <proprietario>
+                <nome>Anna</nome>
+                <cognome>Bando</cognome>
+                <numero>1513061918</numero>
+            </proprietario>
+            <saldo>1000000</saldo>
+            <tipoConto>risparmio</tipoConto>
+        </contoCorrente>
+    </conti>
+</banca>
