@@ -153,3 +153,109 @@ nessun motivo duplicati o persi.
 ---
 
 - **Raw socket**: sono socket non orientati alla connessione e sono utilizzati per la comunicazione non affidabile e bidirezionale. Vengono utilizzati per inviare pacchetti IP personalizzati. 
+
+---
+
+## Stream socket
+
+Con gli stream socket si realizza una connessione sequenziale tipicamente asimmetrica, affidabile e full-duplex basata su stream di byte di lunghezza variabile.
+
+Operativamente, ogni processo crea il proprio endpoint creando l’oggetto `socket` in Java e successivamente:
+- il server si mette in ascolto, in attesa di un collegamento, e quando gli arriva una richiesta la esaudisce mediante la primitiva `accept()` che crea un nuovo socket dedicato alla connessione;
+- il client si pone in coda sul socket del server e quando viene “accettato” dal server crea implicitamente il binding con la porta locale.
+
+---
+## Stream socket
+>Tra i due processi **server** e **client**, il **server** è quello che ha controllo maggiore poiché è il processo che inizialmente crea il socket: più **client** possono comunicare attraverso lo stesso socket ma solo un **server** può essere associato a uno specifico socket.
+>Inoltre il **client** ha bisogno di conoscere l’indirizzo del **server** mentre il **server** acquisisce le informazioni del **client** (e, quindi, anche il suo indirizzo) solo dopo che viene stabilita la connessione.
+
+---
+
+## Stream socket
+Inizializzazione dei processi
+![](A.png)
+Il client invia una richiesta di connessione al server
+![](B.png)
+
+---
+
+## Stream socket
+Il server accetta la connessione e crea un nuovo socket dedicato alla connessione
+![](C.png)
+ll server accetta la richiesta e realizza “un canale virtuale” tra il client e un nuovo socket del server (indicato <span style="color:#0081C7">XX</span>), in modo da lasciare il primo libero per le ulteriori richieste da parte di altri client.
+
+---
+## Stream socket
+
+I due processi si scambiano i dati (funzioni `read()` e `write()`) fino alla chiusura del canale, che viene effettuata rispettivamente mediante la chiamata della primitiva `close()`.
+
+Nella figura a lato possiamo osservare che in un server TCP abbiamo due tipi di socket: il <span style="color:#0081C7">socket di ascolto</span> e il <span style="color:red">socket di connessione</span>.
+
+![bg right:50% w:600px](D.png)
+
+---
+
+## Datagram socket
+
+Con i datagram socket viene realizzata la comunicazione che permette di scambiare dati senza connessione (i messaggi contengono l’indirizzo di destinazione e provenienza) mediante il trasferimento di datagrammi che inoltrano messaggi di dimensione variabile, senza garantire ordine o arrivo dei pacchetti.
+
+Permettono quindi di inviare da un socket a più destinazioni e ricevere su un socket da più sorgenti: in generale realizzano quindi il modello *"molti a molti"* e sono supportate nel dominio Internet dal protocollo UDP.
+
+---
+## Datagram socket
+
+Operativamente, ogni processo crea il proprio endpoint richiamando la primitiva che crea il socket e successivamente:
+- il server si mette in attesa di ricevere i dati (mediante la primitiva `receive()`), e alla loro ricezione li processa e invia una risposta (mediante la primitiva `send()`);
+- il client invia i dati (mediante la primitiva `send()`) e si mette in attesa di ricevere una risposta (mediante la primitiva `receive()`).
+
+Al termine della comunicazione, uno dei processi chiude il socket (mediante la primitiva `close()`).
+
+---
+
+## Trasmissione unicast e multicast
+L’unicast è la “normale” situazione in cui un mittente invia e un destinatario riceve, con eventualmente l’inversione dei ruoli (one-to-one), mentre il multicast è utilizzato per trasmettere informazioni a più host contemporaneamente (one-to-many).
+Nella comunicazione di tipo multicast un insieme di processi formano un gruppo di multicast e un messaggio spedito da un processo a quel gruppo viene recapitato a tutti gli altri partecipanti appartenenti al gruppo.
+Tipiche applicazioni multicast sono per esempio:
+- la trasmissione di un video a più utenti contemporaneamente (live o chiamata multicast)
+- MMO (Massive Multiplayer Online) games e in generale i giochi online
+- DNS (Domain Name System): aggiornamenti delle tabelle di naming inviati a gruppi di DNS
+
+---
+
+## Trasmissione unicast e multicast
+
+Per implementare un sistema multicast è necessario poter definire uno schema di indirizzamento dei gruppi e un supporto che registri la corrispondenza tra un gruppo e i partecipanti oltre alla possibilità di ottimizzare l’uso della rete nel caso di invio di pacchetti a un gruppo (tramite multicast router).
+
+Il protocollo più utilizzato per il multicast in Internet è l’IGMP (Internet Group Management Protocol) che serve a garantire la trasmissione, tra host e multicast router a essi direttamente collegati, dei messaggi relativi alla costituzione dei gruppi. Per esempio fornisce a un host i mezzi per informare il multicast router ad esso più vicino che un'applicazione vuole unirsi ad un determinato gruppo multicast utilizzando normali datagrammi IP.
+
+---
+
+## Trasmissione unicast e multicast
+
+Le API multicast devono quindi contenere primitive per:
+- unirsi a un gruppo di multicast (`join`): identificare e indirizzare univocamente un gruppo
+- lasciare un gruppo di multicast (`leave`)
+- spedire messaggi a un gruppo, cioè a tutti i processi che in quel momento fanno parte del gruppo
+- ricevere messaggi indirizzati a un gruppo del quale l’host fa parte
+
+La gestione dei gruppi è dinamica:
+- un host può unirsi o abbandonare un gruppo e può appartenere a più gruppi
+- non è necessario appartenere a un gruppo per potergli inviare messaggi
+- i membri del gruppo possono appartenere alla medesima rete o a reti fisiche diverse.
+
+---
+
+## Trasmissione unicast e multicast
+
+Come indirizzo di multicast viene utilizzato un indirizzo IP di classe D, ovvero un indirizzo che inizia con i primi 4 bit a 1 e che quindi ha un valore compreso tra `224.0.0.0` e `239.255.255.255`
+
+Gli indirizzi possono essere:
+- permanenti: l’indirizzo di multicast viene assegnato dalla IANA (Internet Assigned Numbers Authority) e rimane assegnato a quel gruppo anche se in un certo momento non ci sono più partecipanti connessi. Questi indirizzi sono detti well-known
+- temporanei: richiedono la definizione di un opportuno protocollo per evitare conflitti nell’attribuzione e vengono rilasciati quando tutti i partecipanti hanno lasciato il gruppo.
+
+---
+
+## Trasmissione unicast e multicast
+La comunicazione multicast utilizza il paradigma connectionless dato che devono essere gestite contemporaneamente un alto numero di connessioni.
+
+>Il broadcast può essere considerato come un caso estremo di multicast dove la comunicazione avviene da uno a tutti (relazione one-to-all) e per la sua realizzazione viene normalmente usato un indirizzo speciale per identificare tutte le possibili destinazioni (indirizzo broadcast)
