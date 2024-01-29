@@ -103,3 +103,39 @@ Quando uno sviluppatore crea un Web Service, si deve preoccupare di definire:
 ---
 
 ## L'architettura SOA
+
+L'architettura SOA (Service Oriented Architecture) è un modello architetturale che permette di realizzare applicazioni software distribuite, basate su servizi, che interagiscono tra loro.
+
+L’architettura SOA deve fornire una piattaforma per costruire servizi applicativi aventi le seguenti caratteristiche:
+
+- loosely coupled: l’utente di un servizio non deve preoccuparsi di scegliere con quali servizi comunicare, “ci pensa” l’infrastruttura
+- location transparent: l’infrastruttura deve nascondere quanti più dettagli tecnici possibili, relativi a tecnologie tra loro differenti, al richiedente del servizio
+- protocol independent: deve essere possibile aggiornare in qualunque momento le implementazioni, senza modificare le interfacce
+
+---
+
+## L'architettura SOA
+
+Gli attori principali di un’architettura SOA sono 3:
+
+- **Service Provider**: è il fornitore del servizio, che lo rende disponibile agli utenti
+- **Service Registry**: contiene il repository dei servizi disponibili, con le relative interfacce. Fornisce al Service Consumer l'interface contract del Service Provider. Praticamente è un catalogo dei servizi disponibili
+- **Service Consumer**: è l'utente del servizio, che ne fa richiesta al Service Registry
+
+---
+
+## L'architettura SOA
+In sintesi la dinamica avviene in tre fasi:
+1. Richiesta del servizio da parte del Service Consumer
+2. Richiesta della descrizione del servizio
+3. Il Service Consumer utilizza l'interface contract per invocare il servizio
+
+Naturalmente affinché un servizio sia disponibile deve essere pubblicata (`publish`) nel Service Registry dal Service Provider una copia della descrizione del servizio (service description)
+Il servizio può essere cercato con `find` e poi invocato con `bind` e `invoke`.
+
+---
+
+## L'architettura SOA
+Ad oggi ci sono due modi per implementare un'architettura SOA:
+- SOAP (Simple Object Access Protocol)
+- REST (REpresentational State Transfer)
