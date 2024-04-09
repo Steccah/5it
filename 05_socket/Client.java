@@ -6,20 +6,21 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         final Socket clientSocket; // socket used by client to send and recieve data from server
-        final BufferedReader in;   // object to read data from socket
-        final PrintWriter out;     // object to write data into socket
+        final BufferedReader in; // object to read data from socket
+        final PrintWriter out; // object to write data into socket
         final Scanner sc = new Scanner(System.in); // object to read data from user's keybord
         try {
-            clientSocket = new Socket("188.228.193.38",3306);
+            clientSocket = new Socket("192.168.1.78", 5000);
             out = new PrintWriter(clientSocket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             Thread sender = new Thread(new Runnable() {
                 String msg;
+
                 @Override
                 public void run() {
-                    while(true){
+                    while (true) {
                         msg = sc.nextLine();
                         out.println(msg);
                         out.flush();
@@ -29,11 +30,12 @@ public class Client {
             sender.start();
             Thread receiver = new Thread(new Runnable() {
                 String msg;
+
                 @Override
                 public void run() {
                     try {
                         msg = in.readLine();
-                        while(msg!=null){
+                        while (msg != null) {
                             System.out.println(msg);
                             msg = in.readLine();
                         }
@@ -45,9 +47,9 @@ public class Client {
                     }
                 }
             });
-            receiver .start();
-    }catch (IOException e){
-        e.printStackTrace();
+            receiver.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
