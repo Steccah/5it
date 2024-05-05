@@ -189,6 +189,21 @@ Per fare ciò, dobbiamo inviare una richiesta POST con un corpo JSON che rappres
 
 ---
 
+## Parametri Path
+
+In alcuni casi, potremmo voler passare parametri tramite il percorso (path) dell'URL. Possiamo farlo utilizzando l'annotazione `@PathVariable`.
+
+```java
+@GetMapping("/greeting/{name}")
+public Greeting greeting(@PathVariable String name) {
+    return new Greeting(counter++, "Hello, " + name + "!");
+}
+```
+
+In questo caso, il parametro `name` è passato tramite il percorso dell'URL. Ad esempio, `/greeting/John`.
+
+---
+
 ## Conclusioni
 
 In questo breve tutorial abbiamo visto come creare una REST API con Java Spring. Abbiamo creato un controller REST, aggiunto metodi per gestire le richieste HTTP, passato parametri e restituito record come risposta.
