@@ -54,8 +54,6 @@ Useremo **Spring Initializr** per creare un progetto Spring Boot con Thymeleaf.
 
 HelloWorldController.java
 ```java
-package net.javaguides.springboot;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
